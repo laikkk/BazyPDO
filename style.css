@@ -1,0 +1,436 @@
+/* css reset - makes the layout looking good in all browsers */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline; }
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block; }
+body {
+    line-height: 1; 
+    font:12px/20px Arial;
+    background:#e0f3ff  repeat scroll 0 0;
+    width: 960px;  
+    font-family: Proxima, Arial, sans-serif; 
+    margin:auto;
+}
+
+ol, ul {
+    list-style: none; }
+
+/* Main Styles */	
+
+#wrapper{
+    width:960px;
+    margin:0 auto;
+    margin-top:100px;
+}
+//menu PIonowe
+#nav {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    width: 960px;
+}
+ul#navigationPion {
+    border-left: 1px solid #C4DBE7;
+    border-right: 1px solid #C4DBE7;
+    float: left;
+    margin: 0 auto;
+    position: relative;
+}
+ul#navigationPion li {
+    border-bottom: 2px solid #C4DBE7;
+    border-top: 1px solid #C4DBE7;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 121px;
+}
+ul#navigationPion li a {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border-left: 1px solid #C2C2C2;
+    border-right: 1px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    color: #616161;
+    display: block;
+    margin: 0 auto;
+    padding: 10px 25px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    transition: color 0.2s linear 0s, background 0.2s linear 0s;
+}
+ul#navigationPion li a:hover {
+    background: none repeat scroll 0 0 #F8F8F8;
+    color: #282828;
+}
+ul#navigationPion li:hover > a {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+ul#navigationPion li:hover > ul {
+    opacity: 1;
+    visibility: visible;
+}
+ul#navigationPion ul, ul#navigationPion ul li ul {
+    background: none repeat scroll 0 0 #F8F8F8;
+    box-shadow: 1px 1px 3px #CCCCCC;
+    list-style: none outside none;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    transition: opacity 0.2s linear 0s, visibility 0.2s linear 0s;
+    visibility: hidden;
+    width: 180px;
+    z-index: 99999;
+}
+ul#navigationPion ul {
+    left: 122px;
+    top: 0;
+    display: block;
+}
+ul#navigationPion ul li ul {
+    left: 181px;
+    top: 0;
+}
+ul#navigationPion ul li {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color -moz-use-text-color #C9C9C9;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 0 0 1px;
+    clear: both;
+    width: 100%;
+}
+ul#navigationPion ul li a {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 0 none;
+    clear: both;
+    color: #616161;
+    display: inline-block;
+    float: left;
+    padding: 7px 15px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    width: 150px;
+}
+ul#navigationPion li a.first {
+    border-left: 0 none;
+}
+ul#navigationPion li a.last {
+    border-right: 0 none;
+}
+
+//Menu POZIOME
+#nav {
+    position:relative;
+    width:920px;
+    margin:0 auto;
+    display: block;
+}
+
+ul#navigation {
+    margin:0px auto;
+    position:relative;
+    float:left;
+    border-left:1px solid #c4dbe7;
+    border-right:1px solid #c4dbe7;
+}
+
+ul#navigation li {
+    display:inline;
+    font-size:12px;
+    font-weight:bold;
+    margin:0;
+    padding:0;
+    float:left;
+    position:relative;
+    border-top:1px solid #c4dbe7;
+    border-bottom:2px solid #c4dbe7;
+}
+
+ul#navigation li a {
+    padding:10px 25px;
+    color:#616161;
+    text-shadow:1px 1px 0px #fff;
+    text-decoration:none;
+    display:inline-block;
+    border-right:1px solid #fff;
+    border-left:1px solid #C2C2C2;
+    border-top:1px solid #fff;
+    background: #f5f5f5;
+
+    -webkit-transition:color 0.2s linear, background 0.2s linear;	
+    -moz-transition:color 0.2s linear, background 0.2s linear;	
+    -o-transition:color 0.2s linear, background 0.2s linear;	
+    transition:color 0.2s linear, background 0.2s linear;	
+}
+
+ul#navigation li a:hover {
+    background:#f8f8f8;
+    color:#282828;
+}
+
+ul#navigation li:hover > a {
+    background:#fff;
+}
+
+/* Drop-Down Navigation */
+
+ul#navigation li:hover > ul
+{
+    visibility:visible;
+    opacity:1;
+}
+
+ul#navigation ul, ul#navigation ul li ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;    
+    visibility:hidden;
+    position: absolute;
+    z-index: 99999;
+    width:180px;
+    background:#f8f8f8;
+    box-shadow:1px 1px 3px #ccc;
+    opacity:0;
+    -webkit-transition:opacity 0.2s linear, visibility 0.2s linear; 
+    -moz-transition:opacity 0.2s linear, visibility 0.2s linear; 
+    -o-transition:opacity 0.2s linear, visibility 0.2s linear; 
+    transition:opacity 0.2s linear, visibility 0.2s linear; 	
+}
+
+ul#navigation ul {
+    top: 43px;
+    left: 1px;
+}
+
+ul#navigation ul li ul {
+    top: 0;
+    left: 181px;
+}
+
+ul#navigation ul li {
+    clear:both;
+    width:100%;
+    border:0 none;
+    border-bottom:1px solid #c9c9c9;
+}
+
+ul#navigation ul li a {
+    background:none;
+    padding:7px 15px;
+    color:#616161;
+    text-shadow:1px 1px 0px #fff;
+    text-decoration:none;
+    display:inline-block;
+    border:0 none;
+    float:left;
+    clear:both;
+    width:150px;
+}
+
+ul#navigation li a.first {
+    border-left: 0 none;
+}
+
+ul#navigation li a.last {
+    border-right: 0 none;
+}
+
+/*
+ TABELA   
+*/
+
+
+
+.table-prices {display: block;}
+.table-prices table { margin: 0 0 30px; border-collapse:collapse; width: 100%; display: block;}
+.table-prices table thead tr th,
+.table-prices table tr td { height: 50px; padding: 0; vertical-align: middle; text-align: center; }
+.table-prices table thead tr hd { }
+.table-prices table thead tr th { background: #734E71; color: #fff; }
+.table-prices table tr td { background: #f8f7f6; color: #445859; border-bottom: 1px solid #fff; }
+.table-prices table thead tr th, .table-prices table tr td { padding-left: 40px; }
+.table-prices table tr th, .table-prices table tr td { text-align: center; }
+.table-prices table tr:nth-child(even) td { background: #f3f2f1 }
+.table-prices table tfoot tr td { background-color: #f1efed; color: #49c4be; font-weight: bold; padding: 0; text-align: center; }
+input[value="USUŃ"]{
+    background-color: red;
+    cursor: pointer;
+}
+a[id*="edit_menu"]{
+    background-color: activecaption;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/*****ANIMATONS (optional)*****/
+
+#menu, #menu .arrow, #menu nav a {
+    transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+}
+
+/*****END ANIMATONS*****/
+
+
+/*****PANEL*****/
+
+#menu {
+    background: #9cb925;
+    border-right: 3px solid #ee4e1d;
+    width: 100px;
+    padding: 30px;
+    position: fixed;
+    z-index: 100000;
+
+    box-shadow: 4px 0 10px rgba(0,0,0,0.25);
+    -moz-box-shadow: 4px 0 10px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 4px 0 10px rgba(0,0,0,0.25);
+}
+
+#menu {
+    left: 0; /* Change to right: 0; if you want the panel to display on the right side. */
+}
+
+#menu:hover, #menu:focus {
+    left: 0 !important; /* Change to right: 0 !important; if you want the panel to display on the right side. */
+}
+
+#menu .arrow {
+    right: 2px; /* Change to left: 2px; if you want the panel to display on the right side. */
+}
+
+#menu .arrow {
+    font: normal 400 25px/25px 'Acme', Helvetica, Arial, sans-serif; /* Acme font is required for .arrow */
+    color: rgba(0,0,0,0.75); /* Arrow color */
+    width: 16px;
+    height: 25px;
+    display: block;
+    position: absolute;
+    top: 20px;
+    cursor: default;
+}
+
+#menu:hover .arrow {
+    transform: rotate(-180deg) translate(6px,-3px);
+    -moz-transform: rotate(-180deg) translate(6px,-3px);
+    -webkit-transform: rotate(-180deg) translate(6px,-3px);
+}
+
+#menu nav {
+    position: relative;
+    top: 75px;
+}
+
+#menu nav a {
+    padding: 10px 5px;
+    border-bottom: 1px dotted #c0c0c0;
+    display: block;
+    clear: both;
+    font: bold 13px/18px 'Open Sans', Helvetica, Arial, sans-serif;
+    color: #fff;
+    text-decoration: none;
+}
+
+#menu nav a:hover {
+    color: #ee4e1d;
+}
+
+/*****END PANEL*****/
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+article{
+    display: block;
+    background-color: #ccc;
+    margin: 4px;
+    padding:6px;
+}
+
+h1 {
+    font-size:36px;
+    font-weight:600;
+    margin-bottom:10px;
+    margin-top:6px;
+}
+.koment{
+    margin: 20px;
+    background-color: #f3f2f1;
+
+}
+.error{
+    display: block;
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom:  20px;
+}
+.tool{
+    background-color: #c0c0c0;
+    margin:6px;
+}
+.toolbtn{
+    display: inline-block;
+    margin:10px;
+}
+.edit_article{
+    display: block;
+}
+input{
+    display: block;
+}
+/*logowanie*/
+.button {
+    display: inline-block;
+    /*    background: #000;*/
+    padding: 5px 10px;
+    z-index: 0;
+    color: #fff;
+}
+
+.overlay {
+    z-index: 5;
+    background: rgba(0, 0, 0, .50);
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.popup {
+    padding: 10px 10px 35px;
+    background: #fff;
+    z-index: 999;
+    display: none;
+    position: absolute;
+    right: 0;
+}
+
+.msg{
+    font-size: 20px;
+    color: #9cb925;
+    text-align: center;
+    margin-bottom:  20px;
+}
+h4{
+    margin-bottom: 20px;
+}
