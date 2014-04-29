@@ -173,7 +173,7 @@ class ArticleMenager {
                 $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $stmt = $pdo->query('SELECT tytul,tresc,id_artykulu,data_utworzenia FROM artykuly  WHERE id_artykulu=' . $_GET['id'] . ' ');
-               
+
 
                 foreach ($stmt as $row) {
                     echo '<h1>' . $row['tytul'] . '</h1>';
@@ -195,7 +195,7 @@ class ArticleMenager {
             } catch (PDOException $e) {
                 echo 'Wystąpił bład podczas wyświetlania artykulu: ' . $e->getMessage();
             }
-            if (isset($_POST['wyslano_komentarz']) && isset($_SESSION['logged'])) {
+            if (isset($_POST['wyslano_komentarz'])) {
                 try {
                     $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
                     $pdo->query('SET NAMES utf8');
@@ -203,11 +203,14 @@ class ArticleMenager {
                     $tresc = trim($_POST['tresc']);
                     if (strlen($tresc) < 6)
                         $errors = '<p class="error">Treść komentarza musi zawierać co najmniej 6 znaków</p>';
+                    if(isset($_SESSION['login']))
+                        $login = $_SESSION['login'];
+                    else $login = 'Nieznany Uzytkownik';
                     if (empty($errors)) {
                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                         $stmt = $pdo->prepare("INSERT INTO komentarze(\"id_artykulu\",\"login\",\"tresc\")  VALUES(:id_artykulu,:login,:tresc)");
                         $stmt->bindValue(":id_artykulu", $id_artykulu, PDO::PARAM_INT);
-                        $stmt->bindValue(":login", $_SESSION['login'], PDO::PARAM_STR);
+                        $stmt->bindValue(":login", $login, PDO::PARAM_STR);
                         $stmt->bindValue(":tresc", $tresc, PDO::PARAM_STR);
                         $stmt->execute();
                         $stmt->closeCursor();
@@ -219,7 +222,7 @@ class ArticleMenager {
                     echo 'Wystąpił bład podczas dodawania komentarza artykulu: ' . $e->getMessage();
                 }
             }
-            if (isset($_SESSION['logged']) && isset($_GET['id'])) {
+            if (isset($_GET['id'])) {
                 echo
                 '<form action="' . $this->getCurrURL() . '" method="post">
                         <label>Dodaj komentarz</label><br>
