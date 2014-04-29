@@ -24,6 +24,8 @@ class ArticleMenager {
     public function wyswietlArtykuly() {
         try {
             $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+            $pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             //wypisanie tabeli            
@@ -63,6 +65,8 @@ class ArticleMenager {
         if (isset($_POST['dodaj_artykul']) && isset($_SESSION['logged'])) {
             try {
                 $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                $pdo->query('SET NAMES utf8');
+                $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                 $tytul = trim($_POST['tytul']);
                 $tresc = trim($_POST['tresc']);
                 if (strlen($tresc) < 6)
@@ -97,43 +101,79 @@ class ArticleMenager {
         return $pageURL;
     }
 
+    public function obslugaEdycji_Usuwania_art() {
+        //obsluga usuwania artykulu
+        if (isset($_POST['usun_artykul']) && isset($_SESSION['logged'])) {
+            try {
+                $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                $pdo->query('SET NAMES utf8');
+                $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
+                $id_artykulu = trim($_POST['id_artykulu']);
+
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $stmt = $pdo->prepare("DELETE FROM artykuly  WHERE id_artykulu=:id_artykulu ");
+                $stmt->bindValue(":id_artykulu", $id_artykulu, PDO::PARAM_INT);
+                $stmt->execute();
+                $stmt->closeCursor();
+                header("refresh:5;url=index.php");
+                echo '<p class="msg">Artykul został usunięty ;)</p><p>Zaraz zostaniesz przeniesiony na stronę główna</p>';
+
+                $stmt->closeCursor();
+            } catch (PDOException $e) {
+                echo 'Wystąpił bład podczas edytownia komentarza artykulu: ' . $e->getMessage();
+            }
+        }
+
+        //obsluga edycji artykulu
+        if (isset($_POST['edytuj_artykul']) && isset($_SESSION['logged'])) {
+            try {
+                $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                $pdo->query('SET NAMES utf8');
+                $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
+                $tytul = trim($_POST['tytul']);
+                $tresc = trim($_POST['tresc']);
+                $id_artykulu = trim($_POST['id_artykulu']);
+                if (strlen($tresc) < 6)
+                    $errors = '<p class="error">Treść komentarza musi zawierać co najmniej 6 znaków</p>';
+                if (empty($errors)) {
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $stmt = $pdo->prepare("UPDATE artykuly SET tytul=:tytul , tresc=:tresc WHERE id_artykulu=:id_artykulu ");
+                    $stmt->bindValue(":tytul", $tytul, PDO::PARAM_STR);
+                    $stmt->bindValue(":tresc", $tresc, PDO::PARAM_STR);
+                    $stmt->bindValue(":id_artykulu", $id_artykulu, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                    echo '<p class="msg">Artykul został zedytowany ;)</p>';
+                } else
+                    echo $errors;
+                $stmt->closeCursor();
+            } catch (PDOException $e) {
+                echo 'Wystąpił bład podczas edytownia komentarza artykulu: ' . $e->getMessage();
+            }
+        }
+    }
+
     public function Edit_and_Show_Article() {
         if (isset($_GET['id']) && is_numeric($_GET['id'])) { //Sprawdzmy czy id wystepuje w urlu , jesli tak to czy jest cyfra
-            //obsluga edycji artykulu
-            if (isset($_POST['edytuj_artykul']) && isset($_SESSION['logged'])) {
-                try {
-                    $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
-                    $tytul = trim($_POST['tytul']);
-                    $tresc = trim($_POST['tresc']);
-                    $id_artykulu = trim($_POST['id_artykulu']);
-                    if (strlen($tresc) < 6)
-                        $errors = '<p class="error">Treść komentarza musi zawierać co najmniej 6 znaków</p>';
-                    if (empty($errors)) {
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $stmt = $pdo->prepare("UPDATE artykuly SET tytul=:tytul , tresc=:tresc WHERE id_artykulu=:id_artykulu ");
-                        $stmt->bindValue(":tytul", $tytul, PDO::PARAM_STR);
-                        $stmt->bindValue(":tresc", $tresc, PDO::PARAM_STR);
-                        $stmt->bindValue(":id_artykulu", $id_artykulu, PDO::PARAM_INT);
-                        $stmt->execute();
-                        $stmt->closeCursor();
-                        echo '<p class="msg">Artykul został zedytowany ;)</p>';
-                    } else
-                        echo $errors;
-                    $stmt->closeCursor();
-                } catch (PDOException $e) {
-                    echo 'Wystąpił bład podczas edytownia komentarza artykulu: ' . $e->getMessage();
-                }
-            }
-
             //wyswietlenie artkulu + edycji
             echo'<article>';
             if (isset($_SESSION['logged']))
-                echo '<div class="tool"><a id="edit_art" class="toolbtn">Edytuj</a><a id="del_art" class="toolbtn">Usuń</a></div>';
+                echo '<div class="tool">
+                        <a id="edit_art" class="toolbtn">Edytuj</a>
+                        <form id="usun_artykul" action="" method="post">
+                        <input type="number" name="id_artykulu" value="' . $_GET['id'] . '" style="display:none;" >
+                        <input type="text" name="usun_artykul" style="display:none;">
+                        <a id="del_art" return confirm(\'Czy napewno chcesz usunąć tą pozycję?\') class="toolbtn">Usuń</a>
+                      </form>
+                        
+                    </div>';
             try {
                 $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                $pdo->query('SET NAMES utf8');
+                $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $stmt = $pdo->query('SELECT tytul,tresc,id_artykulu,data_utworzenia FROM artykuly  WHERE id_artykulu=' . $_GET['id'] . ' ');
-
+               
 
                 foreach ($stmt as $row) {
                     echo '<h1>' . $row['tytul'] . '</h1>';
@@ -158,6 +198,8 @@ class ArticleMenager {
             if (isset($_POST['wyslano_komentarz']) && isset($_SESSION['logged'])) {
                 try {
                     $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                    $pdo->query('SET NAMES utf8');
+                    $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                     $tresc = trim($_POST['tresc']);
                     if (strlen($tresc) < 6)
                         $errors = '<p class="error">Treść komentarza musi zawierać co najmniej 6 znaków</p>';
@@ -187,6 +229,8 @@ class ArticleMenager {
             }
             try {
                 $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                $pdo->query('SET NAMES utf8');
+                $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $stmt = $pdo->query('SELECT * FROM komentarze  WHERE id_artykulu=' . $_GET['id'] . ' ');
 

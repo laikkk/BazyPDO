@@ -5,11 +5,20 @@ ABD projekt II
 -->
 <?php
 session_start();
+require('./Config.php');
+//require('./ConfigPQ.php');
+require('./OrganizerKategorii.php');
+require('./ArticleMenager.php');
+$OrganizerKategorii = new OrganizerKategorii($_db_type, $_db_host, $_db_name, $_db_port, $_db_user, $_db_pass);
+$MenagerArtykulow = new ArticleMenager($_db_type, $_db_host, $_db_name, $_db_port, $_db_user, $_db_pass);
+$MenagerArtykulow->obslugaEdycji_Usuwania_art();
+$OrganizerKategorii->obslugaDodawaniaUsuwaniaEdycjiKategorii();
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--        <meta charset="UTF-8">-->
         <title>PHP - Aplikacje Bazodanowe</title>
         <link rel="stylesheet" href="style.css">
         <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet" />
@@ -66,6 +75,9 @@ session_start();
                     $(".close").click(function(e) {
                         $(".popup, .overlay").hide();
                     });
+                });
+                $("#del_art").click(function() {
+                    $(this).closest('form').submit();
                 });
 
 
@@ -130,27 +142,17 @@ session_start();
             </nav>
         </div>
         <!--END SLIDING MENU PANEL-->
-        <?php
-        require('./Config.php');
-        //require('./ConfigPQ.php');
-        require('./OrganizerKategorii.php');
-        require('./ArticleMenager.php');
-        $OrganizerKategorii = new OrganizerKategorii($_db_type, $_db_host, $_db_name, $_db_port, $_db_user, $_db_pass);
-        ?>
         <nav id="nav" class="clearfix">
-<!--<p class="msg">Pozycja w menu dodana ;)</p>-->
-<!--<p class="error">Nazwa musi zawierać co najmniej 3 znaków</p>-->
             <?php
-            $OrganizerKategorii->obslugaDodawaniaUsuwaniaEdycjiKategorii();
             $OrganizerKategorii->drukujMenuPoziome(NULL);
             ?>
-
         </nav>
         <!--        <nav id="nav" class="clearfix">
         <?php
         //$OrganizerKategorii->drukujMenuPionowe(NULL);
         ?>
                 </nav>-->
+
         <!--        formularz dodawanie artykulow-->
         <article id="add_art_form" class="edit_article" style="display:none;" >
             <form action="" method="post">
@@ -160,12 +162,11 @@ session_start();
             </form>
         </article>
         <?php
-        $MenagerArtykulow = new ArticleMenager($_db_type, $_db_host, $_db_name, $_db_port, $_db_user, $_db_pass);
         $MenagerArtykulow->obslugaDodawaniaArtykulow();
         $OrganizerKategorii->printTable();
         $MenagerArtykulow->wyswietlArtykuly();
         ?>
-    
+
 
         <?php
         $MenagerArtykulow->Edit_and_Show_Article();

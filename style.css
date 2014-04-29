@@ -387,6 +387,8 @@ h1 {
 .tool{
     background-color: #c0c0c0;
     margin:6px;
+    display: inline-flex;
+    cursor: pointer;
 }
 .toolbtn{
     display: inline-block;

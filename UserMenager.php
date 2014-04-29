@@ -72,7 +72,8 @@ class UserMenager {
             if (empty($errors)) {
                 try {
                     //Połączenie z bazą danych MySQL PDO                   
-                    $db = new PDO($this->_db_type.':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                    $db = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                   
                     try {
                         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                         //Sprawdzamy czy użytkownik o takim samym loginie już nie istnieje
@@ -132,8 +133,9 @@ class UserMenager {
             $password = trim($_POST['password']);
             $password = sha1($password);
             try {
-                $db = new PDO($this->_db_type.':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
-                //Sprawdzamy czy użytkownik o podanych danych istnieje
+                $db = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+
+//Sprawdzamy czy użytkownik o podanych danych istnieje
                 $stmt = $db->prepare("SELECT * FROM users WHERE login=:login AND password=:password");
                 $stmt->bindValue(":login", $login, PDO::PARAM_STR);
                 $stmt->bindValue(":password", $password, PDO::PARAM_STR);
@@ -143,7 +145,7 @@ class UserMenager {
                 echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
             }
             if ($stmt->rowCount() != 0) {
-                echo "Zalogowałeś się!";    
+                echo "Zalogowałeś się!";
                 $_SESSION['logged'] = true;
                 $_SESSION['user_id'] = $row['id_users'];
                 $_SESSION['login'] = $row['login'];

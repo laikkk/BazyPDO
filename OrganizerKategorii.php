@@ -49,6 +49,8 @@ class OrganizerKategorii {
     private function drukujMenu($id_nadkat) {
         try {
             $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+            $pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             if (is_null($id_nadkat)) {
@@ -115,6 +117,8 @@ class OrganizerKategorii {
                 //sprawdzanie czy dany id_artykulu istnieje w bazie
                     try {
                         $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                        $pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                         //Sprawdzamy czy użytkownik o takim samym loginie już nie istnieje
                         $stmt = $pdo->prepare("SELECT COUNT(id_artykulu) FROM artykuly WHERE id_artykulu=:id_artykulu");
@@ -136,6 +140,8 @@ class OrganizerKategorii {
                     $errors .= '<p class="error">Nazwa musi zawierać co najmniej 3 znaki</p>';
                 if (is_null($errors) || empty($errors)) {
                     $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+                    $pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $stmt = $pdo->prepare("INSERT INTO kategoria(id_kategoria,nazwa,id_nadkategoria,id_artykulu)  VALUES(:id_kategoria,:nazwa,:id_nadkategoria,:id_artykulu)");
                     $stmt->bindValue(":id_kategoria", $id_kategorii, PDO::PARAM_STR);
@@ -162,7 +168,9 @@ class OrganizerKategorii {
 
                 $errors;
                 $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
-                //sprawdzamy czy dany id_artykulu istnieje w bazie
+$pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');                
+//sprawdzamy czy dany id_artykulu istnieje w bazie
 
                 if (strlen($nazwa) < 3)
                     $errors .= '<p class="error">Nazwa musi zawierać co najmniej 3 znaki</p>';
@@ -194,7 +202,8 @@ class OrganizerKategorii {
             $id_kategorii = trim($_POST['id_kategoria']);
             try {
                 $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
-
+$pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
                 if (!is_numeric($id_kategorii))
                     $errors = '<p class="error">id_kategorii MUSI być liczbą</p>';
 
@@ -217,6 +226,8 @@ class OrganizerKategorii {
     public function printTable() {
         try {
             $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+            $pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
@@ -256,21 +267,21 @@ class OrganizerKategorii {
                 echo '<tr style="display:none;" id="' . $row['id_kategoria'] . '">
 			<td></td>
 			<td><input form="zmien_menu' . $row['id_kategoria'] . '" type="text" name="nazwa" value ="' . $row['nazwa'] . '" /></td>
-			<td><input form="zmien_menu' . $row['id_kategoria'] . '" type="number" pattern="[0-9]*" name="id_nadkategoria" value ="' . $row['id_nadkategoria'] . '" /></td>
-                        <td><input form="zmien_menu' . $row['id_kategoria'] . '" type="number" pattern="[0-9]*" name="id_artykulu" value ="' . $row['id_artykulu'] . '" /></td>
+			<td><input form="zmien_menu' . $row['id_kategoria'] . '" type="number"  name="id_nadkategoria" value ="' . $row['id_nadkategoria'] . '" /></td>
+                        <td><input form="zmien_menu' . $row['id_kategoria'] . '" type="number"  name="id_artykulu" value ="' . $row['id_artykulu'] . '" /></td>
 			<td> 
                             <form id="zmien_menu' . $row['id_kategoria'] . '" action="" method="post">
-                                <input type="number" pattern="[0-9]*" name="id_kategoria" value ="' . $row['id_kategoria'] . '"  style="display:none;"/>
+                                <input type="number"  name="id_kategoria" value ="' . $row['id_kategoria'] . '"  style="display:none;"/>
                                 <input type="submit"  name="zmien_menu" value="ZMIEN">
                             </form>
                         </td>
 		</tr>';
             }
             echo '<tr>
-                        <td><input form="dodaj_menu" type="number" pattern="[0-9]*" name="id_kategorii" required/></td>
+                        <td><input form="dodaj_menu" type="number"  name="id_kategorii" required/></td>
                         <td><input form="dodaj_menu" type="text" name="nazwa" required/></td>
-                        <td><input form="dodaj_menu" type="number" pattern="[0-9]*" name="id_nadkategoria" /></td>
-                        <td><input form="dodaj_menu" type="number" pattern="[0-9]*" name="id_artykulu" /></td>
+                        <td><input form="dodaj_menu" type="number"  name="id_nadkategoria" /></td>
+                        <td><input form="dodaj_menu" type="number"  name="id_artykulu" /></td>
                         <td><form id="dodaj_menu" action="' . $this->getCurrURL() . '" method="post">
                         <input type="submit" name="dodano_menu" value="Dodaj" >
                         
@@ -289,6 +300,8 @@ class OrganizerKategorii {
     private function Check_If_Art_idExist($id_artykulu) {
         try {
             $pdo = new PDO($this->_db_type . ':host=' . $this->_db_host . ';dbname=' . $this->_db_name . ';port=' . $this->_db_port, $this->_db_user, $this->_db_pass);
+            $pdo->query('SET NAMES utf8');
+            $pdo->query('SET CHARACTER_SET utf8_unicode_ci');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //Sprawdzamy czy użytkownik o takim samym loginie już nie istnieje
             $stmt = $pdo->prepare("SELECT COUNT(id_artykulu) FROM artykuly WHERE id_artykulu=:id_artykulu");
